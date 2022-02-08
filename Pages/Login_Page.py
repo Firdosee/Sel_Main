@@ -34,7 +34,9 @@ class Login_Page(Base_Page):
         log.info("Entering the Username")
         self.send_keys_operation(Login_Page.EMAIL_ADDRESS, dict_d["username"])
         log.info("Entering the Password")
-        self.send_keys_operation(Login_Page.PASSWORD, dict_d["password"])
+        self.send_keys_operation(Login_Page.PASSWORD, "gggg")
+        dict_d["password"]
+        assert "a" == "ass"
         log.info("Clicking login button")
         self.click_operation(Login_Page.LOGIN_BUTTON)
         user = self.get_text_from_locator(Login_Page.GET_USER_NAME)
