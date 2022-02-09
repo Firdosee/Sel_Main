@@ -1,5 +1,8 @@
+import time
+
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common import keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -18,14 +21,23 @@ class Base_Page:
             print("Loading took too much time!", e)
 
     def click_operation(self, locator):
+        WebDriverWait(self.driver, 30).until(expected_conditions.element_to_be_clickable(locator))
         WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator)).click()
+        time.sleep(5)
 
-    def send_keys_operation(self, locator, keys):
-        WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator)).send_keys(keys)
+    def clear_text_operation(self, locator):
+        WebDriverWait(self.driver, 30).until(expected_conditions.element_to_be_clickable(locator))
+        WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator)).clear()
+        time.sleep(5)
+        # WebDriverWait(self.driver, 30).until(expected_conditions.element_to_be_clickable(locator)).send_keys(
+
+    def send_keys_operation(self, locator, text):
+        time.sleep(5)
+        WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator)).send_keys(text)
 
     def send_keys_js(self, locator, loc, keys):
         WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator))
-        #self.driver.executeScript("document.getElementByClassName('" + loc + "').setAttribute('value', '" + keys + "')")
+        # self.driver.executeScript("document.getElementByClassName('" + loc + "').setAttribute('value', '" + keys + "')")
         javaScript = "document.getElementsByClassName('" + loc + "')[0].value = '" + keys + "' "
         self.driver.execute_script(javaScript)
 
@@ -41,3 +53,29 @@ class Base_Page:
     def get_title(self):
         get_title = self.driver.title
         return get_title
+
+    def implicit_waiting(self):
+        self.driver.implicitly_wait(30)
+
+    def Hover_operation(self, locator):
+        WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator))
+        a = ActionChains(self.driver)
+        a.move_to_element(
+            WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator))).perform()
+        time.sleep(5)
+
+    def Switch_to_child_window(self, win):
+
+        self.driver.switch_to.window(self.driver.window_handles[win])
+
+    def is_text_present(self, text):
+        return str(text) in self.driver.page_source
+
+    def scroll_operation(self):
+        self.driver.execute_script("window.scrollTo(0,250)")
+
+    def element_exist_check(self, locator):
+        if WebDriverWait(self.driver, 30).until(expected_conditions.visibility_of_element_located(locator)):
+            return True
+        else:
+            return False

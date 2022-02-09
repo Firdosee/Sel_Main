@@ -1,5 +1,4 @@
 import time
-
 import pytest
 import unittest
 from selenium.webdriver.common.by import By
@@ -18,13 +17,10 @@ class Login_Page(Base_Page):
     GET_USER_NAME = (By.XPATH,
                      "//*[text()='More']/ancestor::div[@class='go_DOp']//preceding-sibling::div[@class='go_DOp']//div[@class='exehdJ']")
 
-
-
     def __init__(self, driver):
         super().__init__(driver)
 
-
-    def test_login_to_application(self):
+    def base_login_to_application(self):
         log = test_Base.getLogger()
         dict_d = {}
         log.info("Getting Test Data")
@@ -33,14 +29,12 @@ class Login_Page(Base_Page):
         self.enter_url_operation(dict_d["url"], Login_Page.LOGIN_POPUP)
         log.info("Entering the Username")
         self.send_keys_operation(Login_Page.EMAIL_ADDRESS, dict_d["username"])
+        #self.send_keys_operation(Login_Page.EMAIL_ADDRESS, "ttt")
         log.info("Entering the Password")
-        self.send_keys_operation(Login_Page.PASSWORD, "gggg")
-        dict_d["password"]
-        assert "a" == "ass"
+        self.send_keys_operation(Login_Page.PASSWORD, dict_d["password"])
         log.info("Clicking login button")
         self.click_operation(Login_Page.LOGIN_BUTTON)
         user = self.get_text_from_locator(Login_Page.GET_USER_NAME)
         log.info("Validating if the user is successfully logged in")
-        assert user == dict_d["loggedinuser"]
+        assert user == dict_d["logged_in_user"]
         log.info("user is successfully logged in the account")
-
